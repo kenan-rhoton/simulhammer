@@ -1,0 +1,64 @@
+name: Evocators
+save: 4
+bravery: 8
+wounds: 3
+base:
+    weapon:
+        class: special
+        range: 3
+        attacks: 2
+        hit: 4
+        onhit:
+            mortal_wounds: 1
+    onfailedsave:
+        if:
+            roll: 1
+        then: reroll
+profiles:
+    tempest_blade_and_stormstave:
+        weapon:
+            class: melee
+            range: 1
+            attacks: 4
+            hit: 3
+            wound: 3
+            rend: -1
+            damage: 1
+    grandstave:
+        weapon:
+            class: melee
+            range: 2
+            attacks: 3
+            hit: 3
+            wound: 3
+            rend: 0
+            damage: 2
+leader:
+    if:
+        profile:
+            or:
+                - tempest_blade_and_stormstave
+                - grandstave
+    then:
+        attack_bonus: 1
+magic:
+    if:
+        size: 2+
+    then:
+        unbind: 1
+        spells:
+            empower:
+                target: friendly
+                range: 
+                    wholly_within: 12
+                effect:
+                    onfailedowound: reroll
+keywords:
+    - order
+    - celestial
+    - human
+    - stormcast eternal
+    - sacrosant
+    - corpuscant
+    - wizard
+    - evocators

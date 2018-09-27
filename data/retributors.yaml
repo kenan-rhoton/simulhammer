@@ -1,0 +1,38 @@
+name: Retributors
+save: 4
+bravery: 7
+wounds: 3
+profiles:
+    lightning_hammer:
+        weapon:
+            range: 1
+            attacks: 2
+            hit: 3
+            wound: 3
+            rend: -1
+            damage: 2
+    starsoul_mace:
+        weapon:
+            range: 1
+            attacks: 1
+            hit: 2
+            onhit:
+                if:
+                    roll: 6
+                then:
+                    mortal_wounds: d3 + 1
+                else:
+                    mortal_wounds: d3
+leader:
+    condition:
+        if:
+            profile: lightning_hammer
+        then:
+            attack_bonus: 1
+keywords:
+    - order
+    - celestial
+    - human
+    - stormcast eternals
+    - paladin
+    - retributors
