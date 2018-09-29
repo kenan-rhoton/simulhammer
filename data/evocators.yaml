@@ -36,9 +36,8 @@ profiles:
 leader:
     if:
         profile:
-            or:
-                - tempest_blade_and_stormstave
-                - grandstave
+            - tempest_blade_and_stormstave
+            - grandstave
     then:
         attack_bonus: 1
 magic:

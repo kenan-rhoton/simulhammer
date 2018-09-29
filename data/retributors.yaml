@@ -17,11 +17,9 @@ profiles:
             attacks: 1
             hit: 2
             onhit:
-                if:
-                    roll: 6
-                then:
+                6:
                     mortal_wounds: d3 + 1
-                else:
+                2-5:
                     mortal_wounds: d3
 leader:
     if:
