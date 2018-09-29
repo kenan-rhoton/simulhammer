@@ -33,13 +33,16 @@ class Unit:
         for profile in profiles:
             model = Model()
             model.leader = "leader" in profile
-            model.profile = profile[0]
+            if model.leader:
+                profile.remove("leader")
+            model.profiles = profile
             model.wounds = data["wounds"]
             self.models.append(model)
 
     def status(self):
+        print(self.data["name"].upper())
         for model in self.models:
-            stat = title(model.profile) + ": " + str(model.wounds) + " wounds"
+            stat = title(" - ".join(model.profiles)) + ": " + str(model.wounds) + " wounds"
             if model.leader:
                 stat = "Leader: " + stat
             print(stat)
@@ -74,12 +77,9 @@ class Unit:
 
     def attack(self, opponent):
         for model in self.models:
-            profile = self.data["profiles"][model.profile]
-            self.weapon_attack(profile["weapon"], opponent)
-            if "base" in self.data:
-                base = self.data["base"]
-                if "weapon" in base:
-                    self.weapon_attack(base["weapon"], opponent)
+            for profile in model.profiles:
+                profile_data = self.data["profiles"][profile]
+                self.weapon_attack(profile_data["weapon"], opponent)
 
     def damage(self, amount):
         while amount > 0 and len(self.models) > 0:

@@ -17,11 +17,11 @@ with open("data/retributors.yaml", "r") as retributors_file:
             ["lightning_hammer"],
             ["lightning_hammer"]])
         evocators = Unit(evocators_data,[
-            ["grandstave", "leader"],
-            ["grandstave"],
-            ["grandstave"],
-            ["grandstave"],
-            ["grandstave"]])
+            ["grandstave", "celestial_lightning_arc", "leader"],
+            ["grandstave", "celestial_lightning_arc"],
+            ["grandstave", "celestial_lightning_arc"],
+            ["grandstave", "celestial_lightning_arc"],
+            ["grandstave", "celestial_lightning_arc"]])
         
         print("BEFORE THE ATTACK")
 

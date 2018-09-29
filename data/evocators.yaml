@@ -2,19 +2,19 @@ name: Evocators
 save: 4
 bravery: 8
 wounds: 3
-base:
-    weapon:
-        class: special
-        range: 3
-        attacks: 2
-        hit: 4
-        onhit:
-            mortal_wounds: 1
-    onfailedsave:
-        if:
-            roll: 1
-        then: reroll
 profiles:
+    celestial_lightning_arc:
+        weapon:
+            class: special
+            range: 3
+            attacks: 2
+            hit: 4
+            onhit:
+                mortal_wounds: 1
+        onfailedsave:
+            if:
+                roll: 1
+            then: reroll
     tempest_blade_and_stormstave:
         weapon:
             class: melee

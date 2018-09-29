@@ -24,11 +24,11 @@ profiles:
                 else:
                     mortal_wounds: d3
 leader:
-    condition:
-        if:
-            profile: lightning_hammer
-        then:
-            attack_bonus: 1
+    if:
+        profile:
+            - lightning_hammer
+    then:
+        attack_bonus: 1
 keywords:
     - order
     - celestial
