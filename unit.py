@@ -1,10 +1,11 @@
 import random
+import re
 
 def roll(size = 6):
     return random.randrange(0,size) + 1
 
 def title(string):
-    split = string.split("_")
+    split = re.split("[_ ]", string)
     capitalized = [w.capitalize() for w in split]
     return " ".join(capitalized)
 
