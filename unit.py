@@ -27,6 +27,42 @@ def parse_expression(string):
 class Model:
     pass
 
+class AttackChain:
+
+    def __init__(self, weapon, opponent):
+        self.weapon = weapon
+        self.opponent = opponent
+        self.hit_success = self.wound_success = False
+
+    def execute_special_hit(self, special):
+        for key in special:
+            if re.fullmatch("[0-9-]", key):
+                if re.fullmatch("[" + key + "]", str(self.hit_roll)):
+                    self.execute_special_hit(special[key])
+            if key == "mortal_wounds":
+                self.opponent.damage(parse_expression(special[key]))
+
+    def hit(self):
+        if "hit" in self.weapon:
+            self.hit_roll = roll()
+            if self.hit_roll >= self.weapon["hit"]:
+                self.hit_success = True
+                if "onhit" in self.weapon:
+                    onhit = self.weapon["onhit"]
+                    self.execute_special_hit(self.weapon["onhit"])
+
+    def wound(self):
+        if "wound" in self.weapon and self.hit_success:
+            self.wound_roll = roll()
+            if self.wound_roll >= self.weapon["wound"]:
+                self.wound_success = True
+
+    def save(self):
+        if self.wound_success:
+            self.save_roll = roll()
+            if self.save_roll < self.opponent.data["save"] - self.weapon.get("rend", 0):
+                self.opponent.damage(self.weapon["damage"])
+
 class Unit:
     def __init__(self, data, profiles):
         self.data = data
@@ -51,30 +87,10 @@ class Unit:
 
     def weapon_attack(self, weapon, opponent):
         for _ in range(weapon["attacks"]):
-            hit = roll()
-            if hit >= weapon["hit"]:
-                wound = roll()
-                if "onhit" in weapon:
-                    onhit = weapon["onhit"]
-                    if "mortal_wounds" in onhit:
-                        mw = parse_expression(onhit["mortal_wounds"])
-                        opponent.damage(mw)
-                    if "if" in onhit:
-                        if hit == onhit["if"]["roll"]:
-                            action = onhit["then"]
-                            if "mortal_wounds" in action:
-                                mw = parse_expression(action["mortal_wounds"])
-                                opponent.damage(mw)
-                        elif "else" in onhit:
-                            action = onhit["else"]
-                            if "mortal_wounds" in action:
-                                mw = parse_expression(action["mortal_wounds"])
-                                opponent.damage(mw)
-
-                if "wound" in weapon and wound >= weapon["wound"]:
-                    save = roll()
-                    if save < opponent.data["save"] - weapon["rend"]:
-                        opponent.damage(weapon["damage"])
+            attack_chain = AttackChain(weapon, opponent)
+            attack_chain.hit()
+            attack_chain.wound()
+            attack_chain.save()
 
     def attack(self, opponent):
         for model in self.models:
