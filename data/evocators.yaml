@@ -34,11 +34,9 @@ profiles:
             rend: 0
             damage: 2
 leader:
-    if:
-        profile:
-            - tempest_blade_and_stormstave
-            - grandstave
-    then:
+    tempest_blade_and_stormstave:
+        attack_bonus: 1
+    grandstave:
         attack_bonus: 1
 magic:
     if:

@@ -22,10 +22,7 @@ profiles:
                 2-5:
                     mortal_wounds: d3
 leader:
-    if:
-        profile:
-            - lightning_hammer
-    then:
+    lightning_hammer:
         attack_bonus: 1
 keywords:
     - order

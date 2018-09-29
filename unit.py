@@ -1,5 +1,6 @@
 import random
 import re
+import copy
 
 def roll(size = 6):
     return random.randrange(0,size) + 1
@@ -36,8 +37,8 @@ class AttackChain:
 
     def execute_special_hit(self, special):
         for key in special:
-            if re.fullmatch("[0-9-]", key):
-                if re.fullmatch("[" + key + "]", str(self.hit_roll)):
+            if re.fullmatch("[0-9-]", str(key)):
+                if re.fullmatch("[" + str(key) + "]", str(self.hit_roll)):
                     self.execute_special_hit(special[key])
             if key == "mortal_wounds":
                 self.opponent.damage(parse_expression(special[key]))
@@ -92,10 +93,20 @@ class Unit:
             attack_chain.wound()
             attack_chain.save()
 
+    def buff_leader(self, profile, base):
+        leader_profile = copy.deepcopy(base)
+        if "leader" in self.data:
+            if profile in self.data["leader"]:
+                if "attack_bonus" in self.data["leader"][profile]:
+                    leader_profile["weapon"]["attacks"] += self.data["leader"][profile]["attack_bonus"]
+        return leader_profile
+
     def attack(self, opponent):
         for model in self.models:
             for profile in model.profiles:
                 profile_data = self.data["profiles"][profile]
+                if model.leader:
+                    profile_data = self.buff_leader(profile, profile_data)
                 self.weapon_attack(profile_data["weapon"], opponent)
 
     def damage(self, amount):
